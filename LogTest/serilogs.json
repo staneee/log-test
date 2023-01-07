@@ -5,7 +5,8 @@
     },
     "Using": [
       "Serilog.Sinks.Console",
-      "Serilog.Sinks.Async"
+      "Serilog.Sinks.Async",
+      "Serilog.Sinks.Grafana.Loki"
     ],
     "MinimumLevel": {
       "Default": "Information",
@@ -42,6 +43,21 @@
                 "outputTemplate": "{Timestamp:dd-MM-yyyy HH:mm:ss} [{Level:u3}] [{ThreadId}] {Message}{NewLine}{Exception}"
               }
             }
+          ]
+        }
+      },
+      {
+        "Name": "GrafanaLoki",
+        "Args": {
+          "uri": "http://192.168.2.61:3100",
+          "labels": [
+            {
+              "key": "app",
+              "value": "log-test"
+            }
+          ],
+          "propertiesAsLabels": [
+            "app"
           ]
         }
       }
