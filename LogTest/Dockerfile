@@ -11,7 +11,7 @@ RUN dotnet restore LogTest.csproj
 RUN dotnet build "LogTest.csproj" -c Release -o /app/build
 RUN dotnet publish "LogTest.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS build
+FROM base AS publish
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "LogTest.dll"]
