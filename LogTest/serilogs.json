@@ -1,0 +1,50 @@
+{
+  "Serilog": {
+    "Properties": {
+      "ApplicationName": "log-test"
+    },
+    "Using": [
+      "Serilog.Sinks.Console",
+      "Serilog.Sinks.Async"
+    ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning",
+        "Hangfire.Server.BackgroundServerProcess": "Warning",
+        "Hangfire.Processing.BackgroundExecution": "Warning",
+        "Hangfire.SqlServer.SqlServerObjectsInstaller": "Warning",
+        "Hangfire.BackgroundJobServer": "Warning",
+        "Hangfire.SqlServer.ExpirationManager": "Warning",
+        "Hangfire.Server.ServerWatchdog": "Warning"
+      }
+    },
+    "Enrich": [
+      "WithThreadId"
+    ],
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "Args": {
+          "outputTemplate": "{Timestamp:dd-MM-yyyy HH:mm:ss} [{Level:u3}] [{ThreadId}] {Message}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "Async",
+        "Args": {
+          "configure": [
+            {
+              "Name": "File",
+              "Args": {
+                "path": "logs/log.txt",
+                "rollingInterval": "Hour",
+                "outputTemplate": "{Timestamp:dd-MM-yyyy HH:mm:ss} [{Level:u3}] [{ThreadId}] {Message}{NewLine}{Exception}"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
