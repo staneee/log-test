@@ -6,16 +6,12 @@ EXPOSE 80
 
 FROM hub.gct-china.com/staneee/dotnet:5-focal AS build
 WORKDIR /src
-COPY ["LogTest/LogTest.csproj", "LogTest/"]
-RUN dotnet restore "LogTest/LogTest.csproj"
-COPY . .
-WORKDIR "/src/LogTest"
+COPY [".", "."]
+RUN dotnet restore LogTest.csproj
 RUN dotnet build "LogTest.csproj" -c Release -o /app/build
-
-FROM build AS publish
 RUN dotnet publish "LogTest.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+FROM base AS build
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "LogTest.dll"]
